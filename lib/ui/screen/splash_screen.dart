@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../data/model/auth_utility.dart';
 import '../../widgets/background_images.dart';
 import '../assets_utils/assets_utils.dart';
@@ -25,10 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
        final bool isLoggedIn = await AuthUtility.checkIfUserLoggedIn();
 
        if(mounted){
-         Navigator.pushAndRemoveUntil(context,
-             MaterialPageRoute(builder: (context) =>
-             isLoggedIn ?  const BottomNabBarScreen() :  const LoginScreen()),
-                 (route) => false);
+         Get.offAll( isLoggedIn ?  const BottomNabBarScreen() :  const LoginScreen());
        }
     });
   }
@@ -43,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child:  Center(
                 child: Image.asset(
                   AssetUtils.splashLogo,
-                  height: 170,
+                  height: 300,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../data/Utils/urls.dart';
-import '../../data/service/network_coller.dart';
-import '../../data/service/network_response.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project/state_management/otp_verify_controller.dart';
 import '../../widgets/background_images.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
 import 'Reset_password_screen.dart';
 import 'login_screen.dart';
 
@@ -22,41 +20,6 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
 
 
   final _formKey = GlobalKey<FormState>();
-
-  bool otpVerificationInProgress = false;
-
-
-  Future<void> otpVerification() async{
-
-    otpVerificationInProgress = true;
-    if(mounted){
-      setState(() {});
-    }
-
-    final NetworkResponse response = await NetWorkCaller().getRequest(
-        Urls.otpVerification(widget.email, _otpVerifyController.text));
-
-    otpVerificationInProgress = false;
-    if(mounted){
-      setState(() {});
-    }
-
-    if(response.isSuccess){
-      if(mounted){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context)=> ResetPasswordScreen(email:widget.email, otp:_otpVerifyController.text )));
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: Colors.green, content: Text("otp verify successfully")));
-      }
-    }else{
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: Colors.red, content: Text(" otp verify failed!")));
-      }
-
-    }
-  }
 
 
 
@@ -130,21 +93,34 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
 
                        const SizedBox(height: 20,),
 
-                       SizedBox(
-                         height: 40,
-                         width: double.infinity,
-                         child: Visibility(
-                           visible: !otpVerificationInProgress,
-                           replacement: const Center(child: CircularProgressIndicator(),),
-                           child: ElevatedButton(
-                               onPressed: (){
-                                 if(_formKey.currentState!.validate()){
-                                   otpVerification();
-                                 }
-                               },
-                               child: const Text("Verify"),
-                           ),
-                         ),
+                       GetBuilder<OtpVerifyController>(
+                         builder: (otpVerifyController) {
+                           return SizedBox(
+                             height: 40,
+                             width: double.infinity,
+                             child: Visibility(
+                               visible: !otpVerifyController.otpVerificationInProgress,
+                               replacement: const Center(child: CircularProgressIndicator(),),
+                               child: ElevatedButton(
+                                   onPressed: (){
+                                     if(_formKey.currentState!.validate()){
+                                      otpVerifyController.otpVerification(
+                                          widget.email, _otpVerifyController.text
+                                      ).then((result){
+                                        if(result == true){
+                                          Get.to(ResetPasswordScreen(email: widget.email, otp: _otpVerifyController.text));
+                                          Get.snackbar("Success", "otp verify successfully done",);
+                                        }else{
+                                          Get.snackbar("Failed!", "otp verify failed.try again",);
+                                        }
+                                      });
+                                     }
+                                   },
+                                   child: const Text("Verify"),
+                               ),
+                             ),
+                           );
+                         }
                        ),
 
                        const SizedBox(height: 20,),
@@ -159,9 +135,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                            ),),
 
                            TextButton(onPressed: (){
-                             Navigator.pushAndRemoveUntil(context,
-                                 MaterialPageRoute(builder: (context)=>const LoginScreen()),
-                                     (route) => false);
+                             Get.offAll(const LoginScreen());
                            },
                              child: const Text("Sing In",style: TextStyle(
                                fontSize: 18,

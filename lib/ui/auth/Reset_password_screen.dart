@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../data/Utils/urls.dart';
-import '../../data/service/network_coller.dart';
-import '../../data/service/network_response.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project/state_management/reset_password_controller.dart';
 import '../../widgets/background_images.dart';
 import 'login_screen.dart';
 
@@ -18,49 +17,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final TextEditingController _passwordEditingController = TextEditingController();
   final TextEditingController _confirmPasswordEditingController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-
-  bool _resetPasswordInProgress = false;
-
-
-  Future<void> resetPassword() async{
-
-    _resetPasswordInProgress = true;
-    if(mounted){
-      setState(() {});
-    }
-
-    final Map<String, dynamic> requestBody = {
-      "email":widget.email,
-      "OTP":widget.otp,
-      "password":_passwordEditingController.text,
-    };
-
-    final NetworkResponse response = await NetWorkCaller().postRequest(Urls.resetPassword, requestBody);
-
-
-    _resetPasswordInProgress = false;
-    if(mounted){
-      setState(() {});
-    }
-
-    if(response.isSuccess){
-      if(mounted){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context)=> const LoginScreen()));
-
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: Colors.green, content: Text("Reset Password successfully!")));
-
-      }
-    }else{
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: Colors.red, content: Text(" Reset Password failed!")));
-      }
-
-    }
-  }
 
 
 
@@ -125,21 +81,36 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
                         const SizedBox(height: 20,),
 
-                        SizedBox(
-                          width: double.infinity,
-                          child: Visibility(
-                            visible: !_resetPasswordInProgress,
-                            replacement: const Center(child: CircularProgressIndicator(),),
-                            child: ElevatedButton(
-                                onPressed: (){
-                                  if(!_formKey.currentState!.validate()){
-                                    return;
-                                  }
-                                  resetPassword();
-                                },
-                                child: const Text("Confirm")
-                            ),
-                          ),
+                        GetBuilder<ResetPasswordController>(
+                          builder: (resetPasswordController) {
+                            return SizedBox(
+                              width: double.infinity,
+                              child: Visibility(
+                                visible: !resetPasswordController.resetPasswordInProgress,
+                                replacement: const Center(child: CircularProgressIndicator(),),
+                                child: ElevatedButton(
+                                    onPressed: (){
+                                      if(!_formKey.currentState!.validate()){
+                                        return;
+                                      }
+                                     resetPasswordController.resetPassword(
+                                         widget.email,
+                                         widget.otp,
+                                         _passwordEditingController.text
+                                     ).then((reset){
+                                       if(reset == true){
+                                         Get.to(const LoginScreen());
+                                         Get.snackbar("Success!", "Reset Password Successfully done");
+                                       }else{
+                                         Get.snackbar("Failed!", "Reset Password failed.Try again");
+                                       }
+                                     });
+                                    },
+                                    child: const Text("Confirm")
+                                ),
+                              ),
+                            );
+                          }
                         ),
 
                         const SizedBox(height: 20,),

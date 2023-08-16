@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../data/Utils/urls.dart';
-import '../../data/service/network_coller.dart';
-import '../../data/service/network_response.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project/state_management/regestration_controller.dart';
 import '../../widgets/background_images.dart';
 import 'login_screen.dart';
 
@@ -22,61 +21,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  bool _signUpInProgress = false;
   bool _isHiddenPassword = true;
-
-  Future<void>userSingUp()async{
-
-    _signUpInProgress = true;
-   if(mounted){
-     setState(() {
-     });
-   }
-    final NetworkResponse response =
-    await NetWorkCaller().postRequest(Urls.registration,<String,dynamic>{
-      "email": _emailEditingController.text.trim(),
-      "firstName": _firstNameEditingController.text.trim(),
-      "lastName": _lastNameEditingController.text.trim(),
-      "mobile": _mobileEditingController.text.trim(),
-      "password": _passwordEditingController.text,
-      "photo": "",
-    });
-
-    _signUpInProgress = false;
-    if(mounted){
-      setState(() {
-      });
-    }
-
-    if(response.isSuccess){
-      _emailEditingController.clear();
-      _firstNameEditingController.clear();
-      _lastNameEditingController.clear();
-      _mobileEditingController.clear();
-      _passwordEditingController.clear();
-
-      if(mounted){
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(backgroundColor: Colors.green,content: Text("Registration Successful")));
-
-        Navigator.push(context,
-            MaterialPageRoute(builder:(context)=> const LoginScreen()));
-      }
-    }else{
-      if(mounted){
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(backgroundColor: Colors.red,content: Text("Registration failed!")));
-
-        _signUpInProgress = false;
-        if(mounted){
-          setState(() {
-          });
-
-        }
-      }
-    }
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -191,21 +136,44 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                       const SizedBox(height: 16,),
 
-                      SizedBox(
-                        width: double.infinity,
-                        child: Visibility(
-                          visible: _signUpInProgress == false,
-                          replacement: const Center(child: CircularProgressIndicator(),),
-                          child: ElevatedButton(
-                              onPressed: (){
+                      GetBuilder<RegistrationController>(
+                        builder: (registrationController) {
+                          return SizedBox(
+                            width: double.infinity,
+                            child: Visibility(
+                              visible: registrationController.signUpInProgress == false,
+                              replacement: const Center(child: CircularProgressIndicator(),),
+                              child: ElevatedButton(
+                                  onPressed: (){
+                                    if(_formKey.currentState!.validate()){
+                                      registrationController.userSingUp(
+                                          _emailEditingController.text.trim(),
+                                          _firstNameEditingController.text.trim(),
+                                          _lastNameEditingController.text.trim(),
+                                          _mobileEditingController.text.trim(),
+                                          _passwordEditingController.text,
+                                           "",
+                                      ).then((result) {
+                                        if(result == true){
+                                          _emailEditingController.clear();
+                                        _firstNameEditingController.clear();
+                                        _lastNameEditingController.clear();
+                                        _mobileEditingController.clear();
+                                        _passwordEditingController.clear();
+                                        Get.snackbar("Success!", "Registration Successfully done",backgroundColor: Colors.white,colorText: Colors.green);
+                                        Get.to(const LoginScreen());
+                                        }else{
+                                          Get.snackbar("failed!", "Registration failed!.try again",backgroundColor: Colors.white,colorText: Colors.red);
+                                        }
 
-                                if(_formKey.currentState!.validate()){
-                                  userSingUp();
-                                }
-                              },
-                              child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
-                          ),
-                        ),
+                                      });
+                                    }
+                                  },
+                                  child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
+                              ),
+                            ),
+                          );
+                        }
                       ),
 
                       const SizedBox(height: 16,),
@@ -220,8 +188,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),),
 
                           TextButton(onPressed: (){
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context)=>const LoginScreen()));
+                            Get.to(const LoginScreen());
                           },
                             child: const Text("Sing In",style: TextStyle(
                               fontSize: 18,

@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project/state_management/email_verify_controller.dart';
+import 'package:task_manager_project/state_management/login_controller.dart';
+import 'package:task_manager_project/state_management/otp_verify_controller.dart';
+import 'package:task_manager_project/state_management/regestration_controller.dart';
+import 'package:task_manager_project/state_management/reset_password_controller.dart';
+import 'package:task_manager_project/state_management/summery_count_controller.dart';
 import 'package:task_manager_project/ui/screen/splash_screen.dart';
 
 class MyApp extends StatefulWidget {
@@ -13,9 +20,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
         navigatorKey: MyApp.globalKey,
         debugShowCheckedModeBanner: false,
+        initialBinding: ControllerBinding(),
         home: const SplashScreen(),
         theme: ThemeData(
           brightness: Brightness.light,
@@ -72,5 +80,16 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         themeMode: ThemeMode.light);
+  }
+}
+class ControllerBinding extends Bindings {
+  @override
+  void dependencies() {
+   Get.put<LoginController>(LoginController());
+   Get.put<SummeryCountController>(SummeryCountController());
+   Get.put<RegistrationController>(RegistrationController());
+   Get.put<EmailVerifyController>(EmailVerifyController());
+   Get.put<OtpVerifyController>(OtpVerifyController());
+   Get.put<ResetPasswordController>(ResetPasswordController());
   }
 }

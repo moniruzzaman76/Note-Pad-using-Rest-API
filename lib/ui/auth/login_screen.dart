@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_project/state_management/login_controller.dart';
 import 'package:task_manager_project/ui/auth/registration_screen.dart';
-import '../../data/Utils/urls.dart';
-import '../../data/model/auth_utility.dart';
-import '../../data/model/login_model.dart';
-import '../../data/service/network_coller.dart';
-import '../../data/service/network_response.dart';
 import '../../widgets/background_images.dart';
 import '../screen/bottom_nab_bar_screen.dart';
 import 'email_verification_screen.dart';
-
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -19,6 +15,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
+  // if do not use ControllerBinding and fine.then use this process
+  // final LoginController loginController = Get.put(LoginController());
+
   final TextEditingController _emailEditingController = TextEditingController();
   final TextEditingController _passwordEditingController = TextEditingController();
 
@@ -26,55 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
    bool isHiddenPassword = true;
 
-   bool _singInProgress = false;
-
-
-   Future<void>userSingIn()async{
-
-     _singInProgress = true;
-     if(mounted){
-       setState(() {});
-     }
-
-     Map<String,dynamic>requestBody = {
-       "email":_emailEditingController.text.trim(),
-       "password":_passwordEditingController.text,
-     };
-
-     final NetworkResponse response = await NetWorkCaller().postRequest(
-         Urls.login,requestBody,isLogin: true);
-
-     _singInProgress = false;
-     if(mounted){
-       setState(() {});
-     }
-
-     if(response.isSuccess){
-       _emailEditingController.clear();
-       _passwordEditingController.clear();
-
-       LoginModel model = LoginModel.fromJson(response.body!);
-       await AuthUtility.saveUserInfo(model);
-
-       if(mounted){
-         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-             builder: (context)=>const BottomNabBarScreen()),
-                 (route) => false);
-
-         ScaffoldMessenger.of(context).showSnackBar(
-             const SnackBar(backgroundColor: Colors.green,content: Text("Login Successful!")));
-       }
-     }else{
-       if(mounted){
-         ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(backgroundColor: Colors.red, content: Text("Login fail!")));
-       }
-       _singInProgress = false;
-       if(mounted){
-         setState(() {});
-       }
-     }
-   }
+   //LoginController loginController = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -138,22 +89,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       const SizedBox(height: 20,),
 
-                      SizedBox(
-                         width: double.infinity,
-                        child: Visibility(
-                          visible: _singInProgress == false,
-                          replacement: const Center(child: CircularProgressIndicator()),
-                          child: ElevatedButton(
-                              onPressed: (){
-                                if(_formKey.currentState!.validate()){
+                      GetBuilder<LoginController>(
+                        builder: (loginController) {
+                          return SizedBox(
+                             width: double.infinity,
+                            child: Visibility(
+                              visible: loginController.singInProgress == false,
+                              replacement: const Center(child: CircularProgressIndicator()),
+                              child: ElevatedButton(
+                                  onPressed: (){
+                                    if(_formKey.currentState!.validate()){
+                                      loginController.userSingIn(
+                                          _emailEditingController.text.trim(),
+                                          _passwordEditingController.text
+                                      ).then((result) {
+                                        if(result == true){
+                                          Get.offAll(const BottomNabBarScreen());
+                                        }else{
+                                          Get.snackbar("Failed!", "Login failed!.Please try again");
+                                        }
 
-                                  userSingIn();
-
-                                }
-                              },
-                              child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
-                          ),
-                        ),
+                                      });
+                                    }
+                                  },
+                                  child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
+                              ),
+                            ),
+                          );
+                        }
                       ),
 
                       const SizedBox(height: 20,),
@@ -187,8 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),),
 
                           TextButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context)=>const RegistrationScreen()));
+                           Get.to(const RegistrationScreen());
                           },
                               child: const Text("Sing up",style: TextStyle(
                                 fontSize: 18,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../data/Utils/urls.dart';
-import '../../data/service/network_coller.dart';
-import '../../data/service/network_response.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project/state_management/email_verify_controller.dart';
+import 'package:task_manager_project/ui/auth/otp_verification_screen.dart';
 import '../../widgets/background_images.dart';
-import 'otp_verification_screen.dart';
+
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({Key? key}) : super(key: key);
@@ -17,41 +17,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   final TextEditingController _emailEditingController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-
-   bool emailVerificationInProgress = false;
-
-
-  Future<void> emailVerification() async{
-    emailVerificationInProgress = true;
-    if(mounted){
-      setState(() {});
-    }
-    final NetworkResponse response = await NetWorkCaller().getRequest(
-        Urls.emailVerification(_emailEditingController.text.trim()));
-    emailVerificationInProgress = false;
-    if(mounted){
-      setState(() {});
-    }
-     if(response.isSuccess){
-       if(mounted){
-         Navigator.push(context, MaterialPageRoute(
-             builder: (context)=> PinVerificationScreen(email: _emailEditingController.text,)));
-
-         if (mounted) {
-           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-               backgroundColor: Colors.green, content: Text(" Email verify successful!")));
-         }
-       }
-
-     }else{
-       if (mounted) {
-         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-             backgroundColor: Colors.red, content: Text(" Email verify failed!")));
-       }
-
-     }
-  }
-
 
 
   @override
@@ -95,20 +60,30 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
                       const SizedBox(height: 20,),
 
-                      SizedBox(
-                        width: double.infinity,
-                        child: Visibility(
-                          visible: !emailVerificationInProgress,
-                          replacement: const Center(child: CircularProgressIndicator(),),
-                          child: ElevatedButton(
-                              onPressed: (){
-                                if(_formKey.currentState!.validate()){
-                                  emailVerification();
-                                }
-                              },
-                              child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
-                          ),
-                        ),
+                      GetBuilder<EmailVerifyController>(
+                        builder: (emailVerifyController) {
+                          return SizedBox(
+                            width: double.infinity,
+                            child: Visibility(
+                              visible: !emailVerifyController.emailVerifyInProgress,
+                              replacement: const Center(child: CircularProgressIndicator(),),
+                              child: ElevatedButton(
+                                  onPressed: (){
+                                    if(_formKey.currentState!.validate()){
+                                      emailVerifyController.emailVerification(
+                                          _emailEditingController.text.trim()
+                                      ).then((result){
+                                        Get.to(PinVerificationScreen(email: _emailEditingController.text));
+                                        // if(result == true){
+                                        // }
+                                      });
+                                    }
+                                  },
+                                  child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
+                              ),
+                            ),
+                          );
+                        }
                       ),
 
                       const SizedBox(height: 20,),
