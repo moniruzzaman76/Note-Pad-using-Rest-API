@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../data/Utils/urls.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project/state_management/delete_task_Controller.dart';
 import '../../data/model/task_list_model.dart';
-import '../../data/service/network_coller.dart';
-import '../../data/service/network_response.dart';
 
 class ShowDeleteTask extends StatefulWidget {
   final TaskData task;
@@ -14,41 +13,6 @@ class ShowDeleteTask extends StatefulWidget {
 }
 
 class _ShowDeleteTaskState extends State<ShowDeleteTask> {
-
-   final TaskListModel _taskListModel = TaskListModel();
-
-   bool deleteInProgress = false;
-
-
-  Future<void> deleteTask(taskId) async {
-
-    deleteInProgress = true;
-    if(mounted){
-      setState(() {});
-    }
-
-    final NetworkResponse response =
-    await NetWorkCaller().getRequest(Urls.deleteTask(taskId));
-
-    deleteInProgress = true;
-    if(mounted){
-      setState(() {});
-    }
-
-    if (response.isSuccess) {
-
-      _taskListModel.data?.removeWhere((element) => element.sId == taskId);
-
-    } else {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: Colors.red, content: Text("Task delete failed!")));
-      }
-    }
-  }
-
-
-
 
 
   @override
@@ -62,20 +26,26 @@ class _ShowDeleteTaskState extends State<ShowDeleteTask> {
       actions: [
         Row(
           children: [
-            TextButton(
-                onPressed: (){
-                  deleteTask(widget.task.sId.toString());
-                  Navigator.pop(context);
-                  if(mounted){
-                    setState(() {});
-                  }
-                }, child: const Text("Yes",style: TextStyle(
-                fontSize: 20,
-                color: Colors.red
-            ),)),
+            GetBuilder<DeleteTaskController>(
+              builder: (deleteTaskController) {
+                return TextButton(
+                    onPressed: (){
+                      deleteTaskController.deleteTask(widget.task.sId.toString()).then((result) {
+                        if(result == true){
+                          widget.onDeleteTab();
+                        }
+                      });
+                      Get.back();
+
+                    }, child: const Text("Yes",style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.red
+                ),));
+              }
+            ),
             const Spacer(),
             TextButton(onPressed: (){
-              Navigator.pop(context);
+              Get.back();
             }, child: const Text("NO",style: TextStyle(
               fontSize: 20,
             ),)),

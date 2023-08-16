@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../data/Utils/urls.dart';
-import '../../data/service/network_coller.dart';
-import '../../data/service/network_response.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project/state_management/create_task_controller.dart';
 import '../../widgets/user_profile_banar.dart';
 import 'bottom_nab_bar_screen.dart';
 
@@ -16,42 +15,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
   final TextEditingController _subjectEditingController = TextEditingController();
   final TextEditingController _descriptionEditingController = TextEditingController();
-  
-  bool _addTaskInProgress = false;
 
-  Future<void>addNewTask()async{
-    _addTaskInProgress = true;
-    if(mounted){
-      setState(() {});
-    }
-    final NetworkResponse response = await NetWorkCaller().postRequest(Urls.createTask, <String,dynamic>{
 
-      "title":_subjectEditingController.text.trim(),
-      "description":_descriptionEditingController.text.trim(),
-      "status":"New"
-    });
-    _addTaskInProgress = false;
-    if(mounted){
-      setState(() {});
-    }
-
-    if(response.isSuccess){
-      _subjectEditingController.clear();
-      _descriptionEditingController.clear();
-      if(mounted){
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: (Text("Task Added Successful!"))));
-      }
-    }else{
-      if(mounted){
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: (Text("Task add failed!"))));
-      }
-      _addTaskInProgress = false;
-      if(mounted){
-        setState(() {});
-      }
-    }
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,21 +56,33 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
               const SizedBox(height: 20,),
 
-              SizedBox(
-                width: double.infinity,
-                child: Visibility(
-                  visible: _addTaskInProgress == false,
-                  replacement: const Center(child: CircularProgressIndicator(),),
-                  child: ElevatedButton(
-                      onPressed: (){
-                        addNewTask();
-                        Navigator.push(context,
-                            MaterialPageRoute(
-                                builder: (context)=>const BottomNabBarScreen()));
-                      },
-                      child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
-                  ),
-                ),
+              GetBuilder<CreateTaskController>(
+
+                builder: (createTaskController) {
+                  return SizedBox(
+                    width: double.infinity,
+                    child: Visibility(
+                      visible: createTaskController.addTaskInProgress == false,
+                      replacement: const Center(child: CircularProgressIndicator(),),
+                      child: ElevatedButton(
+                          onPressed: (){
+                           createTaskController.addNewTask(
+                               _subjectEditingController.text.trim(),
+                               _descriptionEditingController.text.trim()
+                           ).then((result){
+                             if(result == true){
+                               _subjectEditingController.clear();
+                               _descriptionEditingController.clear();
+                               Get.to(const BottomNabBarScreen());
+                             }
+                           });
+
+                          },
+                          child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
+                      ),
+                    ),
+                  );
+                }
               ),
             ],
           ),

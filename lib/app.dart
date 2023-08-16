@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_manager_project/state_management/cancel%20_task_controller.dart';
+import 'package:task_manager_project/state_management/completed_task_controller.dart';
+import 'package:task_manager_project/state_management/create_task_controller.dart';
+import 'package:task_manager_project/state_management/delete_task_Controller.dart';
 import 'package:task_manager_project/state_management/email_verify_controller.dart';
+import 'package:task_manager_project/state_management/inProgress_task_controller.dart';
 import 'package:task_manager_project/state_management/login_controller.dart';
+import 'package:task_manager_project/state_management/new_task_controller.dart';
 import 'package:task_manager_project/state_management/otp_verify_controller.dart';
 import 'package:task_manager_project/state_management/regestration_controller.dart';
 import 'package:task_manager_project/state_management/reset_password_controller.dart';
 import 'package:task_manager_project/state_management/summery_count_controller.dart';
+import 'package:task_manager_project/state_management/update_profile_controller.dart';
+import 'package:task_manager_project/state_management/update_task_status_controller.dart';
 import 'package:task_manager_project/ui/screen/splash_screen.dart';
 
 class MyApp extends StatefulWidget {
@@ -91,5 +99,13 @@ class ControllerBinding extends Bindings {
    Get.put<EmailVerifyController>(EmailVerifyController());
    Get.put<OtpVerifyController>(OtpVerifyController());
    Get.put<ResetPasswordController>(ResetPasswordController());
+   Get.put<NewTaskController>(NewTaskController());
+   Get.put<UpdateProfileController>(UpdateProfileController());
+   Get.put<CreateTaskController>(CreateTaskController());
+   Get.put<DeleteTaskController>(DeleteTaskController());
+   Get.put<UpdateTaskStatusController>(UpdateTaskStatusController());
+   Get.put<CompletedTaskController>(CompletedTaskController());
+   Get.put<CancelTaskController>(CancelTaskController());
+   Get.put<InProgressTaskController>(InProgressTaskController());
   }
 }

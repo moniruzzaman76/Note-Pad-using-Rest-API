@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../data/Utils/urls.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_project/state_management/update_profile_controller.dart';
 import '../../data/model/auth_utility.dart';
 import '../../data/model/login_model.dart';
-import '../../data/service/network_coller.dart';
-import '../../data/service/network_response.dart';
 import '../../widgets/background_images.dart';
 import 'package:image_picker/image_picker.dart';
+import 'bottom_nab_bar_screen.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({Key? key}) : super(key: key);
@@ -42,50 +42,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   final ImagePicker picker = ImagePicker();
    XFile? imageFile;
-   
-   bool updateProfileInProgress = false;
-   
-   Future<void>updateProfile() async{
-     updateProfileInProgress = true;
-     if(mounted){
-       setState(() {});
-     }
-     final Map<String,dynamic> requestBody = {
-       "firstName": _firstNameEditingController.text.trim(),
-       "lastName": _lastNameEditingController.text.trim(),
-       "mobile": _mobileEditingController.text.trim(),
-       "photo": "",
-     };
-     if(_passwordEditingController.text.isNotEmpty){
-       requestBody["password"] = _passwordEditingController.text;
-     }
-     final NetworkResponse response = await NetWorkCaller().postRequest(Urls.profileUpdate, requestBody);
-     updateProfileInProgress = false;
-     if(mounted){
-       setState(() {});
-     }
-     if(response.isSuccess){
-      _passwordEditingController.clear();
-
-      userData.firstName = _firstNameEditingController.text.trim();
-      userData.lastName = _lastNameEditingController.text.trim();
-      userData.mobile = _mobileEditingController.text.trim();
-
-      AuthUtility.updateUserInfo(userData);
-
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: Colors.green, content: Text("Profile update successfully")));
-      }
-     }else{
-       if (mounted) {
-         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-             backgroundColor: Colors.red, content: Text("Profile update failed")));
-       }
-     }
-   }
-
 
 
   @override
@@ -234,24 +190,38 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
                       const SizedBox(height: 16,),
 
-                      SizedBox(
-                        width: double.infinity,
-                        child: Visibility(
-                          visible: !updateProfileInProgress,
-                          replacement: const Center(child: CircularProgressIndicator(),),
-                          child: ElevatedButton(
-                              onPressed: (){
-                                if(_formKey.currentState!.validate()){
-                                  updateProfile();
-
-                                  // Navigator.push(context,
-                                  //     MaterialPageRoute(builder: (context)=>
-                                  //     const BottomNabBarScreen()));
-                                }
-                              },
-                              child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
-                          ),
-                        ),
+                      GetBuilder<UpdateProfileController>(
+                        builder: (updateProfileController) {
+                          return SizedBox(
+                            width: double.infinity,
+                            child: Visibility(
+                              visible: !updateProfileController.updateProfileInProgress,
+                              replacement: const Center(child: CircularProgressIndicator(),),
+                              child: ElevatedButton(
+                                  onPressed: (){
+                                    if(_formKey.currentState!.validate()){
+                                     updateProfileController.updateProfile(
+                                         _firstNameEditingController.text.trim(),
+                                         _lastNameEditingController.text.trim(),
+                                         _mobileEditingController.text.trim(),
+                                          "",
+                                         _passwordEditingController.text
+                                     ).then((result) {
+                                       if(result == true) {
+                                         userData.firstName = _firstNameEditingController.text.trim();
+                                         userData.lastName = _lastNameEditingController.text.trim();
+                                         userData.mobile = _mobileEditingController.text.trim();
+                                         AuthUtility.updateUserInfo(userData);
+                                       }
+                                     });
+                                     Get.to(const BottomNabBarScreen());
+                                    }
+                                  },
+                                  child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
+                              ),
+                            ),
+                          );
+                        }
                       ),
 
                     ],
