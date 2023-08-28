@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../state_management/cancel _task_controller.dart';
+import '../../state_management/completed_task_controller.dart';
+import '../../state_management/inProgress_task_controller.dart';
+import '../../state_management/new_task_controller.dart';
+import '../../state_management/summery_count_controller.dart';
 import 'cancel_screen.dart';
 import 'completed_screen.dart';
 import 'inprogress_screen.dart';
@@ -12,6 +18,28 @@ class BottomNabBarScreen extends StatefulWidget {
 }
 
 class _BottomNabBarScreenState extends State<BottomNabBarScreen> {
+
+
+  final InProgressTaskController _inProgressTaskController = Get.find();
+  final CancelTaskController _cancelTaskController = Get.find();
+  final CompletedTaskController _completedTaskController = Get.find();
+  final NewTaskController _newTaskController = Get.find<NewTaskController>();
+  final SummeryCountController _summeryCountController = Get.find<SummeryCountController>();
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _summeryCountController.getSummeryCount();
+      _newTaskController.getNewTaskList();
+      _completedTaskController.getCompletedTaskList();
+      _cancelTaskController.getCancelTaskList();
+      _inProgressTaskController.getInProgressTaskList();
+
+    });
+  }
 
   int selectedIndex = 0;
 
@@ -31,7 +59,7 @@ class _BottomNabBarScreenState extends State<BottomNabBarScreen> {
         selectedItemColor: Colors.green,
         unselectedItemColor: Colors.grey,
         selectedIconTheme: const IconThemeData(
-          color: Colors.blue
+          color: Colors.teal
         ),
         unselectedLabelStyle: const TextStyle(
           color: Colors.grey,

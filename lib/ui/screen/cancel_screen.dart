@@ -16,13 +16,7 @@ class CancelScreen extends StatefulWidget {
 }
 
 class _CancelScreenState extends State<CancelScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _cancelTaskController.getCancelTaskList();
-    });
-  }
+
 
   final CancelTaskController _cancelTaskController = Get.find();
 

@@ -37,9 +37,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 100),
-                      Text("Get Started with",
+                      const SizedBox(height: 70),
+                      Text("Create Account",
                         style: Theme.of(context).textTheme.titleLarge,),
+                      const SizedBox(height: 10,),
+                      const Text("Sing up to Continue",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        )),
 
                       const SizedBox(height: 20,),
 

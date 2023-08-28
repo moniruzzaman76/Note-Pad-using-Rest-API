@@ -17,7 +17,7 @@ class _UserProfileBannerState extends State<UserProfileBanner> {
   @override
   Widget build(BuildContext context) {
     return  ListTile(
-       tileColor: Colors.green,
+       tileColor: Colors.teal,
       // using CachedNetworkImage package
       leading: CachedNetworkImage(
         placeholder: (context, url) => const CircularProgressIndicator(),

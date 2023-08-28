@@ -11,7 +11,7 @@ import 'network_response.dart';
 
 class NetWorkCaller{
 
-  Future<NetworkResponse>getRequest(String url,)async{
+  Future<NetworkResponse>getRequest(String url,{bool isSuccessOTP = false})async{
 
    try {
       Response response = await get(Uri.parse(url),headers: {"token": AuthUtility.userInfo.token.toString()});
@@ -35,7 +35,7 @@ class NetWorkCaller{
   }
 
 
-  Future<NetworkResponse>postRequest(String url,Map<String,dynamic>body, {bool isLogin = false} )async{
+  Future<NetworkResponse>postRequest(String url,Map<String,dynamic>body, {bool isLogin = false})async{
     log(body.toString());
     Response response = await post(
         Uri.parse(url),
@@ -45,11 +45,11 @@ class NetWorkCaller{
     log(response.statusCode.toString());
     log(response.body);
     try{
-      if(response.statusCode==200){
+      if(response.statusCode==200 ){
         return NetworkResponse(true, response.statusCode, jsonDecode(response.body));
       }
       else if(response.statusCode == 401){
-        if(isLogin == false){
+        if(isLogin == false ){
           gotoLogin();
         }
       }

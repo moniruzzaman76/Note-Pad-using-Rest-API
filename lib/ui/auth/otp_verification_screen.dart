@@ -107,14 +107,28 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                                       otpVerifyController.otpVerification(
                                           widget.email, _otpVerifyController.text
                                       ).then((result){
-                                        if(result == true){
+                                        if( result == true){
+                                          Get.snackbar(
+                                            'Success',
+                                            'Otp verification success!',
+                                            backgroundColor: Colors.green,
+                                            colorText: Colors.white,
+                                            borderRadius: 10,
+                                          );
                                           Get.to(ResetPasswordScreen(email: widget.email, otp: _otpVerifyController.text));
-                                          Get.snackbar("Success", "otp verify successfully done",);
+
                                         }else{
-                                          Get.snackbar("Failed!", "otp verify failed.try again",);
+                                          Get.snackbar(
+                                            'Failed',
+                                            'Otp verification has been failed!',
+                                            backgroundColor: Colors.red,
+                                            colorText: Colors.white,
+                                            borderRadius: 10,
+                                          );
                                         }
                                       });
                                      }
+
                                    },
                                    child: const Text("Verify"),
                                ),

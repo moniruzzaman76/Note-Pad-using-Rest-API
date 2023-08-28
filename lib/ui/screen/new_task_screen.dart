@@ -26,14 +26,6 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
    final NewTaskController _newTaskController = Get.find<NewTaskController>();
 
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _summeryCountController.getSummeryCount();
-      _newTaskController.getNewTaskList();
-    });
-  }
 
 
   @override

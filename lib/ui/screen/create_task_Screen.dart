@@ -64,21 +64,24 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     child: Visibility(
                       visible: createTaskController.addTaskInProgress == false,
                       replacement: const Center(child: CircularProgressIndicator(),),
-                      child: ElevatedButton(
-                          onPressed: (){
-                           createTaskController.addNewTask(
-                               _subjectEditingController.text.trim(),
-                               _descriptionEditingController.text.trim()
-                           ).then((result){
-                             if(result == true){
-                               _subjectEditingController.clear();
-                               _descriptionEditingController.clear();
-                               Get.to(const BottomNabBarScreen());
-                             }
-                           });
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            onPressed: (){
+                             createTaskController.addNewTask(
+                                 _subjectEditingController.text.trim(),
+                                 _descriptionEditingController.text.trim()
+                             ).then((result){
+                               if(result == true){
+                                 _subjectEditingController.clear();
+                                 _descriptionEditingController.clear();
+                                 Get.to(const BottomNabBarScreen());
+                               }
+                             });
 
-                          },
-                          child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
+                            },
+                            child: const Icon(Icons.arrow_circle_right_outlined,size: 30,)
+                        ),
                       ),
                     ),
                   );

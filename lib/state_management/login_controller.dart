@@ -34,6 +34,8 @@ class LoginController extends GetxController{
       return true;
 
     }else{
+      _singInProgress = false;
+      update();
       return false;
     }
   }

@@ -41,7 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 100),
+                      const SizedBox(height: 50),
+                      const Icon(Icons.lock,size: 150,color: Colors.grey,),
+                      const SizedBox(height: 30),
                        Text("Get Started with",
                       style: Theme.of(context).textTheme.titleLarge,),
 
@@ -106,7 +108,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                         if(result == true){
                                           Get.offAll(const BottomNabBarScreen());
                                         }else{
-                                          Get.snackbar("Failed!", "Login failed!.Please try again");
+                                          Get.snackbar(
+                                            "Failed!", "Login failed!.Please try again",
+                                            backgroundColor: Colors.red,
+                                            colorText: Colors.white,
+
+                                          );
                                         }
 
                                       });
@@ -126,9 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(width: 230,),
                           TextButton(
                             onPressed: (){
-                              Navigator.push(context,
-                                  MaterialPageRoute(
-                                      builder: (context)=>const EmailVerificationScreen()));
+                              Get.to(const EmailVerificationScreen());
                             },
                             child: const Text("Forgot Password ?",style: TextStyle(
                             color: Colors.blueGrey,
@@ -151,6 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           TextButton(onPressed: (){
                            Get.to(const RegistrationScreen());
+
                           },
                               child: const Text("Sing up",style: TextStyle(
                                 fontSize: 18,

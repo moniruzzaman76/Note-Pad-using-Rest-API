@@ -19,6 +19,7 @@ class UpdateTaskStatusController extends  GetxController{
       Get.snackbar("Task Status", "update successfully done");
       return true;
     } else {
+      Get.snackbar("Update Status", "failed!.try again");
       return false;
     }
   }

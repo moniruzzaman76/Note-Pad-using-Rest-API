@@ -39,11 +39,31 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           ScreenBackGround(
               child:  Center(
-                child: Image.asset(
-                  AssetUtils.splashLogo,
-                  height: 300,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 100,),
+                    const Text("Welcome To",style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 35,
+                        color: Colors.green
+                    ),),
+                    const SizedBox(height: 15,),
+                    const Icon(Icons.android_outlined,color: Colors.green,size: 70,),
+                    const SizedBox(height: 15,),
+                    const Text("Node Pad",style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 50,
+                      color: Colors.blue,
+                      letterSpacing: 4,
+                    ),),
+                    const SizedBox(height: 50,),
+                    Image.asset(
+                      AssetUtils.splashLogo,
+                      height: 300,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
                 ),
               )
           )

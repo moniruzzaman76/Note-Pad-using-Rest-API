@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../data/Utils/urls.dart';
 import '../data/service/network_coller.dart';
 import '../data/service/network_response.dart';
@@ -22,8 +21,7 @@ class OtpVerifyController extends GetxController{
     _otpVerificationInProgress = false;
     update();
 
-    if(response.isSuccess){
-
+    if(response.isSuccess ){
       return true;
     }else{
      return false;

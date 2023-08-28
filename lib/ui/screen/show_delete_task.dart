@@ -30,11 +30,8 @@ class _ShowDeleteTaskState extends State<ShowDeleteTask> {
               builder: (deleteTaskController) {
                 return TextButton(
                     onPressed: (){
-                      deleteTaskController.deleteTask(widget.task.sId.toString()).then((result) {
-                        if(result == true){
-                          widget.onDeleteTab();
-                        }
-                      });
+                      deleteTaskController.deleteTask(widget.task.sId.toString());
+                      widget.onDeleteTab();
                       Get.back();
 
                     }, child: const Text("Yes",style: TextStyle(

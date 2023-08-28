@@ -21,17 +21,6 @@ class _InProgressScreenState extends State<InProgressScreen> {
 
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _inProgressTaskController.getInProgressTaskList();
-    });
-  }
-
-
-
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(

@@ -17,14 +17,6 @@ class CompletedScreen extends StatefulWidget {
 
 class _CompletedScreenState extends State<CompletedScreen> {
   
-  
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _completedTaskController.getCompletedTaskList();
-    });
-  }
 
   final CompletedTaskController _completedTaskController = Get.find();
 

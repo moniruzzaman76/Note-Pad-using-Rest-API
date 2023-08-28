@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
         home: const SplashScreen(),
         theme: ThemeData(
           brightness: Brightness.light,
-          primarySwatch: Colors.green,
+          primarySwatch: Colors.teal,
           inputDecorationTheme: InputDecorationTheme(
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 24, horizontal: 16),

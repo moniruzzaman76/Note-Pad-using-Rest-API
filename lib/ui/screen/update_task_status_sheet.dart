@@ -45,7 +45,9 @@ class _UpdateTaskStatusSheetState extends State<UpdateTaskStatusSheet> {
                   return ListTile(
                     onTap: () {
                       _selectedTask = taskStatusList[index];
-                      setState(() {});
+                     if(mounted){
+                       setState(() {});
+                     }
                     },
                     title: Text(taskStatusList[index].toUpperCase()),
                     trailing: _selectedTask == taskStatusList[index]
@@ -68,14 +70,9 @@ class _UpdateTaskStatusSheetState extends State<UpdateTaskStatusSheet> {
                         width: double.infinity,
                         child: ElevatedButton(
                             onPressed: () {
-                              updateTaskStatusController.updateTask(widget.task.sId!, _selectedTask).then((result) {
-                                if(result == true){
+                              updateTaskStatusController.updateTask(widget.task.sId!, _selectedTask);
                                   widget.onUpdate();
-                                }else{
-                                  Get.snackbar("Update Status", "failed!.try again");
-                                }
-                              });
-                              Get.back();
+                                  Get.back();
                             },
                             child: const Text('Update',style: TextStyle(
                               fontSize: 20,
