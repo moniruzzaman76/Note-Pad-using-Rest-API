@@ -166,10 +166,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         _lastNameEditingController.clear();
                                         _mobileEditingController.clear();
                                         _passwordEditingController.clear();
-                                        Get.snackbar("Success!", "Registration Successfully done",backgroundColor: Colors.white,colorText: Colors.green);
+                                        Get.snackbar(
+                                            "Success!", "Registration Successfully done",
+                                            backgroundColor: Colors.green,
+                                            colorText: Colors.white
+                                        );
                                         Get.to(const LoginScreen());
                                         }else{
-                                          Get.snackbar("failed!", "Registration failed!.try again",backgroundColor: Colors.white,colorText: Colors.red);
+                                          Get.snackbar(
+                                              "failed!", "Registration failed!.try again",
+                                              backgroundColor: Colors.red,
+                                              colorText: Colors.white
+                                          );
                                         }
 
                                       });

@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       Row(
                         children: [
-                          const SizedBox(width: 230,),
+                          const SizedBox(width: 215,),
                           TextButton(
                             onPressed: (){
                               Get.to(const EmailVerificationScreen());

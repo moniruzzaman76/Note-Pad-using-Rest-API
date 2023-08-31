@@ -28,6 +28,4 @@ class OtpVerifyController extends GetxController{
     }
   }
 
-
-
 }

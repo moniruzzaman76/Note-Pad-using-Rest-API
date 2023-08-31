@@ -24,15 +24,15 @@ class CreateTaskController extends GetxController{
     if(response.isSuccess){
       Get.snackbar(
           "Task Add", "successfully done!",
-          backgroundColor: CupertinoColors.white,
-          colorText: CupertinoColors.activeGreen
+          backgroundColor: CupertinoColors.activeGreen,
+          colorText: CupertinoColors.white
       );
       return true;
     }else{
       Get.snackbar(
           "Task Add", "Failed.try again!",
-          backgroundColor: CupertinoColors.white,
-          colorText: CupertinoColors.activeGreen
+          backgroundColor: CupertinoColors.destructiveRed,
+          colorText: CupertinoColors.white
       );
       return false;
     }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../data/Utils/urls.dart';
 import '../data/model/task_list_model.dart';
@@ -24,7 +25,11 @@ class InProgressTaskController extends GetxController{
       if(response.isSuccess){
         _taskListModel = TaskListModel.fromJson(response.body!);
       }else{
-        Get.snackbar("InProgress Task", "get failed!.try again");
+        Get.snackbar(
+            "failed", "Email verify failed!.try again",
+            backgroundColor: CupertinoColors.destructiveRed,
+            colorText: CupertinoColors.white
+        );
       }
     }
   }

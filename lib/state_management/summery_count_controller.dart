@@ -25,7 +25,6 @@ class SummeryCountController extends GetxController{
       update();
       return true;
     } else {
-      Get.snackbar("failed", "Task Count failed.try again");
       return false;
       }
     }

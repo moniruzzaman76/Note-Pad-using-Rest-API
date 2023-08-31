@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../data/Utils/urls.dart';
@@ -27,7 +28,13 @@ class CancelTaskController extends GetxController{
       if(response.isSuccess){
         _taskListModel = TaskListModel.fromJson(response.body!);
       }else{
-        Get.snackbar("Cancel Task", "get failed!.try again");
+        Get.snackbar(
+          'Failed',
+          "get failed!.try again",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          borderRadius: 10,
+        );
       }
     }
   }

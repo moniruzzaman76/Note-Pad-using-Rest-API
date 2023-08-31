@@ -22,15 +22,15 @@ class EmailVerifyController extends GetxController{
     if(response.isSuccess){
       Get.snackbar(
           "Successful", "Email verify successfully done!",
-          backgroundColor: CupertinoColors.white,
-          colorText: CupertinoColors.activeGreen
+          backgroundColor: CupertinoColors.activeGreen,
+          colorText: CupertinoColors.white
       );
       //return true;
       }else{
       Get.snackbar(
           "failed", "Email verify failed!.try again",
-          backgroundColor: CupertinoColors.white,
-          colorText: CupertinoColors.destructiveRed
+          backgroundColor: CupertinoColors.destructiveRed,
+          colorText: CupertinoColors.white
       );
       //return false;
     }

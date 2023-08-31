@@ -100,9 +100,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                      ).then((reset){
                                        if(reset == true){
                                          Get.to(const LoginScreen());
-                                         Get.snackbar("Success!", "Reset Password Successfully done");
+                                         Get.snackbar(
+                                             "Success!", "Reset Password Successfully done",
+                                           backgroundColor: Colors.green,
+                                           colorText: Colors.white
+                                         );
                                        }else{
-                                         Get.snackbar("Failed!", "Reset Password failed.Try again");
+                                         Get.snackbar(
+                                             "Failed!", "Reset Password failed.Try again",
+                                             backgroundColor: Colors.red,
+                                             colorText: Colors.white
+                                         );
                                        }
                                      });
                                     },

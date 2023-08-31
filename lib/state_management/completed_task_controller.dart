@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../data/Utils/urls.dart';
 import '../data/model/task_list_model.dart';
@@ -25,7 +26,13 @@ class CompletedTaskController extends GetxController{
       if(response.isSuccess){
         _taskListModel = TaskListModel.fromJson(response.body!);
       }else{
-        Get.snackbar("completed Task", "get failed!.try again");
+        Get.snackbar(
+          'Failed',
+          "get failed!.try again",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          borderRadius: 10,
+        );
       }
     }
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../data/Utils/urls.dart';
@@ -25,7 +26,11 @@ class NewTaskController extends GetxController{
         _taskListModel = TaskListModel.fromJson(response.body!);
         return true;
       } else {
-        Get.snackbar("Failed", "data get failed.try again");
+        Get.snackbar(
+            "Task Add", "Failed.try again!",
+            backgroundColor: CupertinoColors.destructiveRed,
+            colorText: CupertinoColors.white
+        );
         return false;
       }
     }

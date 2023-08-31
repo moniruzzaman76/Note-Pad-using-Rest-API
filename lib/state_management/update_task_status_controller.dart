@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../data/Utils/urls.dart';
 import '../data/service/network_coller.dart';
@@ -16,10 +17,18 @@ class UpdateTaskStatusController extends  GetxController{
     _updateTaskInProgress = false;
     update();
     if (response.isSuccess) {
-      Get.snackbar("Task Status", "update successfully done");
+      Get.snackbar(
+        "Task Status", "update successfully done",
+          backgroundColor: CupertinoColors.activeGreen,
+          colorText: CupertinoColors.white
+      );
       return true;
     } else {
-      Get.snackbar("Update Status", "failed!.try again");
+      Get.snackbar(
+        "Update Status", "failed!.try again",
+          backgroundColor: CupertinoColors.destructiveRed,
+          colorText: CupertinoColors.white
+      );
       return false;
     }
   }

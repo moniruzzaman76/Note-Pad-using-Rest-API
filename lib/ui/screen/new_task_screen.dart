@@ -21,12 +21,8 @@ class NewTaskScreen extends StatefulWidget {
 class _NewTaskScreenState extends State<NewTaskScreen> {
 
 
-
   final SummeryCountController _summeryCountController = Get.find<SummeryCountController>();
    final NewTaskController _newTaskController = Get.find<NewTaskController>();
-
-
-
 
   @override
   Widget build(BuildContext context) {

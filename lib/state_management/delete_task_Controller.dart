@@ -18,12 +18,19 @@ class DeleteTaskController extends GetxController{
 
     if (response.isSuccess) {
       _taskListModel.data?.removeWhere((element) => element.sId == taskId);
-      Get.snackbar("Delete!", "delete Successful.try again");
+      Get.snackbar(
+        "Delete!", "delete Successful.try again",
+          backgroundColor: CupertinoColors.activeGreen,
+          colorText: CupertinoColors.white
+      );
       update();
       return true;
 
     } else {
-      Get.snackbar("Delete!", "delete failed.try again",backgroundColor: CupertinoColors.destructiveRed);
+      Get.snackbar("Delete!", "delete failed.try again",
+          backgroundColor: CupertinoColors.destructiveRed,
+        colorText: CupertinoColors.white
+      );
       return false;
     }
   }
