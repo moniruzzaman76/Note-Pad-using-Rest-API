@@ -35,7 +35,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 70),
                       Text("Create Account",
@@ -43,7 +43,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       const SizedBox(height: 10,),
                       const Text("Sing up to Continue",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.w500,
                         )),
 

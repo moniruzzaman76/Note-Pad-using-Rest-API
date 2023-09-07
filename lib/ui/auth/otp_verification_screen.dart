@@ -142,7 +142,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                        Row(
                          mainAxisAlignment: MainAxisAlignment.center,
                          children: [
-                           const Text("Don't have account?",style: TextStyle(
+                           const Text("Have account?",style: TextStyle(
                                fontSize: 18,
                                fontWeight: FontWeight.w500,
                                letterSpacing: 0.5

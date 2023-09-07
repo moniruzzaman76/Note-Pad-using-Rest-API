@@ -38,11 +38,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         Text("Set Password",
                           style: Theme.of(context).textTheme.titleLarge,),
 
-                        const SizedBox(height:6,),
-
-                        Text("A 6 digit verification pin will sent on your email address",
-                          style: Theme.of(context).textTheme.bodyMedium,),
-
                         const SizedBox(height: 16,),
 
                         TextFormField(
@@ -126,7 +121,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text("Don't have account?",style: TextStyle(
+                            const Text("Have account?",style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: 0.5
