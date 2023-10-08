@@ -3,7 +3,7 @@
 A new Flutter project.
 
 
-![Artboard – 1](https://github.com/moniruzzaman76/Task-Manager-Project-using-Getx/assets/107347380/f2703152-33a9-411c-8356-dd961386fa28)
+//![Artboard – 1](https://github.com/moniruzzaman76/Task-Manager-Project-using-Getx/assets/107347380/f2703152-33a9-411c-8356-dd961386fa28)
 
 
 
